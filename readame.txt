@@ -1,0 +1,589 @@
+
+# Este READAME esta hecho con ia para aclarar que en ningun momento lo hice yop
+
+
+# 🏢 Coworking Space API
+
+API REST para gestionar un espacio de coworking. Permite administrar miembros, salas y reservas.
+
+**Stack:** Node.js · Express · MongoDB · Mongoose · ES6 Modules · Arquitectura MVC
+
+---
+
+## 📋 Tabla de Contenidos
+
+- [Instalación](#instalación)
+- [Variables de Entorno](#variables-de-entorno)
+- [Ejecutar el Proyecto](#ejecutar-el-proyecto)
+- [Endpoints](#endpoints)
+  - [Members](#members)
+  - [Rooms](#rooms)
+  - [Bookings](#bookings)
+
+---
+
+## 🚀 Instalación
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/tu-usuario/api-coworking.git
+
+# 2. Entrar a la carpeta
+cd api-coworking
+
+# 3. Instalar dependencias
+npm install
+```
+
+---
+
+## ⚙️ Variables de Entorno
+
+Crea un archivo `.env` en la raíz del proyecto:
+
+```env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/coworking_db
+```
+
+---
+
+## ▶️ Ejecutar el Proyecto
+
+```bash
+# Desarrollo (con nodemon)
+npm run dev
+
+# Producción
+npm start
+```
+
+El servidor corre en: `http://localhost:3000`
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+API_REST/
+├── src/
+│   ├── config/
+│   │   └── db.js
+│   ├── models/
+│   │   ├── Member.js
+│   │   ├── Room.js
+│   │   └── Booking.js
+│   ├── controllers/
+│   │   ├── member.controller.js
+│   │   ├── room.controller.js
+│   │   └── booking.controller.js
+│   ├── routes/
+│   │   ├── member.routes.js
+│   │   ├── room.routes.js
+│   │   └── booking.routes.js
+│   └── app.js
+├── .env
+├── .gitignore
+├── server.js
+└── package.json
+```
+
+---
+
+## 📌 Endpoints
+
+### Members
+
+#### `GET /api/members` — Obtener todos los miembros
+
+**Request:**
+```
+GET http://localhost:3000/api/members
+```
+
+**Response `200 OK`:**
+```json
+[
+  {
+    "_id": "6a2887caced4524032f28c78",
+    "nombre": "Juan Pérez",
+    "email": "juan@email.com",
+    "plan": "basic",
+    "activo": true,
+    "createdAt": "2026-06-09T21:36:01.025Z",
+    "updatedAt": "2026-06-09T21:36:01.025Z"
+  }
+]
+```
+
+---
+
+#### `GET /api/members/:id` — Obtener un miembro por ID
+
+**Request:**
+```
+GET http://localhost:3000/api/members/6a2887caced4524032f28c78
+```
+
+**Response `200 OK`:**
+```json
+{
+  "_id": "6a2887caced4524032f28c78",
+  "nombre": "Juan Pérez",
+  "email": "juan@email.com",
+  "plan": "basic",
+  "activo": true,
+  "createdAt": "2026-06-09T21:36:01.025Z",
+  "updatedAt": "2026-06-09T21:36:01.025Z"
+}
+```
+
+**Response `404 Not Found`:**
+```json
+{
+  "message": "Miembro no encontrado"
+}
+```
+
+---
+
+#### `POST /api/members` — Crear un miembro
+
+**Request:**
+```json
+{
+  "nombre": "Juan Pérez",
+  "email": "juan@email.com",
+  "plan": "basic"
+}
+```
+
+| Campo | Tipo | Requerido | Valores válidos |
+|-------|------|-----------|-----------------|
+| nombre | String | ✅ | cualquier texto |
+| email | String | ✅ | único, formato email |
+| plan | String | ✅ | `basic` `pro` `enterprise` |
+| activo | Boolean | ❌ | default: `true` |
+
+**Response `201 Created`:**
+```json
+{
+  "_id": "6a2887caced4524032f28c78",
+  "nombre": "Juan Pérez",
+  "email": "juan@email.com",
+  "plan": "basic",
+  "activo": true,
+  "createdAt": "2026-06-09T21:36:01.025Z",
+  "updatedAt": "2026-06-09T21:36:01.025Z"
+}
+```
+
+---
+
+#### `PUT /api/members/:id` — Actualizar un miembro
+
+**Request:**
+```json
+{
+  "plan": "pro",
+  "activo": false
+}
+```
+
+**Response `200 OK`:**
+```json
+{
+  "_id": "6a2887caced4524032f28c78",
+  "nombre": "Juan Pérez",
+  "email": "juan@email.com",
+  "plan": "pro",
+  "activo": false,
+  "createdAt": "2026-06-09T21:36:01.025Z",
+  "updatedAt": "2026-06-09T22:00:00.000Z"
+}
+```
+
+---
+
+#### `DELETE /api/members/:id` — Eliminar un miembro
+
+**Request:**
+```
+DELETE http://localhost:3000/api/members/6a2887caced4524032f28c78
+```
+
+**Response `200 OK`:**
+```json
+{
+  "message": "Miembro eliminado correctamente"
+}
+```
+
+---
+
+### Rooms
+
+#### `GET /api/rooms` — Obtener todas las salas
+
+**Request:**
+```
+GET http://localhost:3000/api/rooms
+```
+
+**Response `200 OK`:**
+```json
+[
+  {
+    "_id": "6a288741ced4524032f28c76",
+    "nombre": "Sala Azul",
+    "capacidad": 10,
+    "tipo": "meeting_room",
+    "precioPorHora": 25000,
+    "activo": true,
+    "createdAt": "2026-06-09T21:36:01.025Z",
+    "updatedAt": "2026-06-09T21:36:01.025Z"
+  }
+]
+```
+
+---
+
+#### `GET /api/rooms/:id` — Obtener una sala por ID
+
+**Request:**
+```
+GET http://localhost:3000/api/rooms/6a288741ced4524032f28c76
+```
+
+**Response `200 OK`:**
+```json
+{
+  "_id": "6a288741ced4524032f28c76",
+  "nombre": "Sala Azul",
+  "capacidad": 10,
+  "tipo": "meeting_room",
+  "precioPorHora": 25000,
+  "activo": true,
+  "createdAt": "2026-06-09T21:36:01.025Z",
+  "updatedAt": "2026-06-09T21:36:01.025Z"
+}
+```
+
+---
+
+#### `POST /api/rooms` — Crear una sala
+
+**Request:**
+```json
+{
+  "nombre": "Sala Azul",
+  "capacidad": 10,
+  "tipo": "meeting_room",
+  "precioPorHora": 25000
+}
+```
+
+| Campo | Tipo | Requerido | Valores válidos |
+|-------|------|-----------|-----------------|
+| nombre | String | ✅ | cualquier texto |
+| capacidad | Number | ✅ | mínimo 1 |
+| tipo | String | ✅ | `private` `shared` `meeting_room` |
+| precioPorHora | Number | ✅ | mínimo 0 |
+| activo | Boolean | ❌ | default: `true` |
+
+**Response `201 Created`:**
+```json
+{
+  "_id": "6a288741ced4524032f28c76",
+  "nombre": "Sala Azul",
+  "capacidad": 10,
+  "tipo": "meeting_room",
+  "precioPorHora": 25000,
+  "activo": true,
+  "createdAt": "2026-06-09T21:36:01.025Z",
+  "updatedAt": "2026-06-09T21:36:01.025Z"
+}
+```
+
+---
+
+#### `PUT /api/rooms/:id` — Actualizar una sala
+
+**Request:**
+```json
+{
+  "precioPorHora": 30000,
+  "capacidad": 15
+}
+```
+
+**Response `200 OK`:**
+```json
+{
+  "_id": "6a288741ced4524032f28c76",
+  "nombre": "Sala Azul",
+  "capacidad": 15,
+  "tipo": "meeting_room",
+  "precioPorHora": 30000,
+  "activo": true,
+  "createdAt": "2026-06-09T21:36:01.025Z",
+  "updatedAt": "2026-06-09T22:00:00.000Z"
+}
+```
+
+---
+
+#### `DELETE /api/rooms/:id` — Eliminar una sala
+
+**Response `200 OK`:**
+```json
+{
+  "message": "Sala eliminada correctamente"
+}
+```
+
+---
+
+#### `GET /api/rooms/:id/availability?date=YYYY-MM-DD` — Verificar disponibilidad
+
+**Request:**
+```
+GET http://localhost:3000/api/rooms/6a288741ced4524032f28c76/availability?date=2025-06-10
+```
+
+**Response `200 OK` (disponible):**
+```json
+{
+  "roomId": "6a288741ced4524032f28c76",
+  "date": "2025-06-10",
+  "disponible": true,
+  "reservasEseDia": 0
+}
+```
+
+**Response `200 OK` (no disponible):**
+```json
+{
+  "roomId": "6a288741ced4524032f28c76",
+  "date": "2025-06-10",
+  "disponible": false,
+  "reservasEseDia": 1
+}
+```
+
+---
+
+### Bookings
+
+#### `GET /api/bookings` — Obtener todas las reservas
+
+Acepta filtros opcionales combinables:
+
+| Query Param | Descripción | Ejemplo |
+|-------------|-------------|---------|
+| `status` | Filtrar por estado | `?status=confirmed` |
+| `roomId` | Filtrar por sala | `?roomId=6a288741...` |
+
+**Ejemplos:**
+```
+GET http://localhost:3000/api/bookings
+GET http://localhost:3000/api/bookings?status=confirmed
+GET http://localhost:3000/api/bookings?roomId=6a288741ced4524032f28c76
+GET http://localhost:3000/api/bookings?status=confirmed&roomId=6a288741ced4524032f28c76
+```
+
+**Response `200 OK`:**
+```json
+[
+  {
+    "_id": "6a288b1bca86955f3f545820",
+    "member": {
+      "_id": "6a2887caced4524032f28c78",
+      "nombre": "Juan Pérez",
+      "email": "juan@email.com",
+      "plan": "basic"
+    },
+    "room": {
+      "_id": "6a288741ced4524032f28c76",
+      "nombre": "Sala Azul",
+      "tipo": "meeting_room",
+      "precioPorHora": 25000
+    },
+    "fechaInicio": "2025-06-10T09:00:00.000Z",
+    "fechaFin": "2025-06-10T11:00:00.000Z",
+    "estado": "confirmed",
+    "notas": "Reunión de equipo",
+    "costoTotal": 50000,
+    "createdAt": "2026-06-09T21:52:27.756Z",
+    "updatedAt": "2026-06-09T21:52:57.746Z"
+  }
+]
+```
+
+---
+
+#### `GET /api/bookings/:id` — Obtener una reserva por ID
+
+**Request:**
+```
+GET http://localhost:3000/api/bookings/6a288b1bca86955f3f545820
+```
+
+**Response `200 OK`:**
+```json
+{
+  "_id": "6a288b1bca86955f3f545820",
+  "member": {
+    "_id": "6a2887caced4524032f28c78",
+    "nombre": "Juan Pérez",
+    "email": "juan@email.com",
+    "plan": "basic"
+  },
+  "room": {
+    "_id": "6a288741ced4524032f28c76",
+    "nombre": "Sala Azul",
+    "tipo": "meeting_room",
+    "precioPorHora": 25000
+  },
+  "fechaInicio": "2025-06-10T09:00:00.000Z",
+  "fechaFin": "2025-06-10T11:00:00.000Z",
+  "estado": "confirmed",
+  "notas": "Reunión de equipo",
+  "costoTotal": 50000,
+  "createdAt": "2026-06-09T21:52:27.756Z",
+  "updatedAt": "2026-06-09T21:52:57.746Z"
+}
+```
+
+---
+
+#### `POST /api/bookings` — Crear una reserva
+
+**Request:**
+```json
+{
+  "member": "6a2887caced4524032f28c78",
+  "room": "6a288741ced4524032f28c76",
+  "fechaInicio": "2025-06-10T09:00:00.000Z",
+  "fechaFin": "2025-06-10T11:00:00.000Z",
+  "notas": "Reunión de equipo"
+}
+```
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| member | ObjectId | ✅ | ID de un Member existente |
+| room | ObjectId | ✅ | ID de una Room existente |
+| fechaInicio | Date | ✅ | Formato ISO 8601 |
+| fechaFin | Date | ✅ | Debe ser mayor a fechaInicio |
+| notas | String | ❌ | Texto libre opcional |
+
+> ⚠️ El `costoTotal` se calcula automáticamente: `precioPorHora × horas reservadas`  
+> ⚠️ No se permiten dos reservas `confirmed` para la misma sala en el mismo rango de fechas
+
+**Response `201 Created`:**
+```json
+{
+  "_id": "6a288b1bca86955f3f545820",
+  "member": {
+    "_id": "6a2887caced4524032f28c78",
+    "nombre": "Juan Pérez",
+    "email": "juan@email.com",
+    "plan": "basic"
+  },
+  "room": {
+    "_id": "6a288741ced4524032f28c76",
+    "nombre": "Sala Azul",
+    "tipo": "meeting_room",
+    "precioPorHora": 25000
+  },
+  "fechaInicio": "2025-06-10T09:00:00.000Z",
+  "fechaFin": "2025-06-10T11:00:00.000Z",
+  "estado": "pending",
+  "notas": "Reunión de equipo",
+  "costoTotal": 50000,
+  "createdAt": "2026-06-09T21:52:27.756Z",
+  "updatedAt": "2026-06-09T21:52:27.756Z"
+}
+```
+
+**Response `400 Bad Request` (fechas inválidas):**
+```json
+{
+  "message": "La fecha de fin debe ser mayor a la fecha de inicio"
+}
+```
+
+**Response `400 Bad Request` (solapamiento):**
+```json
+{
+  "message": "La sala ya tiene una reserva confirmada en ese rango de fechas"
+}
+```
+
+---
+
+#### `PATCH /api/bookings/:id/status` — Cambiar estado de una reserva
+
+**Request:**
+```json
+{
+  "estado": "confirmed"
+}
+```
+
+| Valor | Descripción |
+|-------|-------------|
+| `pending` | Reserva pendiente (default) |
+| `confirmed` | Reserva confirmada |
+| `cancelled` | Reserva cancelada |
+
+**Response `200 OK`:**
+```json
+{
+  "_id": "6a288b1bca86955f3f545820",
+  "member": {
+    "_id": "6a2887caced4524032f28c78",
+    "nombre": "Juan Pérez",
+    "email": "juan@email.com",
+    "plan": "basic"
+  },
+  "room": {
+    "_id": "6a288741ced4524032f28c76",
+    "nombre": "Sala Azul",
+    "tipo": "meeting_room",
+    "precioPorHora": 25000
+  },
+  "fechaInicio": "2025-06-10T09:00:00.000Z",
+  "fechaFin": "2025-06-10T11:00:00.000Z",
+  "estado": "confirmed",
+  "notas": "Reunión de equipo",
+  "costoTotal": 50000,
+  "createdAt": "2026-06-09T21:52:27.756Z",
+  "updatedAt": "2026-06-09T21:52:57.746Z"
+}
+```
+
+**Response `400 Bad Request` (estado inválido):**
+```json
+{
+  "message": "Estado inválido. Debe ser: pending, confirmed, cancelled"
+}
+```
+
+---
+
+## 🧠 Decisiones Técnicas
+
+- **ES6 Modules** (`import/export`) en lugar de CommonJS (`require`) para código moderno y limpio
+- **Arquitectura MVC** para separar responsabilidades: modelos, controladores y rutas
+- **populate()** con múltiples paths para traer datos relacionados en una sola consulta
+- **costoTotal calculado automáticamente** al crear la reserva: `precioPorHora × horas`
+- **Validación de solapamiento** para evitar dos reservas confirmadas en el mismo rango
+- **Query params combinables** (`?status=confirmed&roomId=...`) para filtrado flexible
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado como proyecto de aprendizaje en el SENA.
