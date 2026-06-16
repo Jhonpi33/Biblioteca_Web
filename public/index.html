@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <header class="header">
+        <h1>Biblioteca</h1>
+    </header>
+
+    <section class="login_seccion">
+        <div class="login_contenedor">
+            <h2 class="login_titulo">Inicio de Sesión</h2>
+
+            <form class="login_formulario" id="loginForm">
+
+                <input 
+                    type="email" 
+                    id="email"
+                    placeholder="Correo" 
+                    required
+                >
+                <input 
+                    type="password" 
+                    id="password"
+                    placeholder="Contraseña" 
+                    required
+                >
+
+                <button type="submit">Ingresar</button>
+
+                <p id="error_msg" style="color:red; text-align:center; display:none;">
+                    Correo o contraseña incorrectos
+                </p>
+
+            </form>
+        </div>
+    </section>
+
+    <script src="login.js"></script>
+</body>
+</html>

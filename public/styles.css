@@ -1,0 +1,74 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #141e30, #243b55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.header {
+    font-size: 2rem;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: white;
+}
+
+.login_contenedor {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    width: 350px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.login_titulo {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #243b55;
+}
+
+/* Faltaba el punto . antes de login_formulario */
+.login_formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login_formulario input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.login_formulario input:focus {
+    border-color: #243b55;
+}
+
+.login_formulario button {
+    padding: 12px;
+    border: none;
+    background: #243b55;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.login_formulario button:hover {
+    transform: scale(1.05);
+    background: #141e30;
+}
